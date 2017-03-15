@@ -8,7 +8,7 @@
     $(document).ready(function() {
 	    $.ajax({
 	        type: "GET",
-	        url: "js/brejinho.txt",
+	        url: "dados/brejinho.txt",
 	        dataType: "text",
 	        success: function(data) {processData(data);}
 	     });
@@ -20,12 +20,10 @@
   
 
 	function processData(allText) {
-	    var record_num = 4;  // or however many elements there are in each row
+	    var record_num = 4;
 	    var allTextLines = allText.split(/\r\n|\n/);
 	    var entries = allTextLines[0].split(';');
-	    //console.log(entries);
-	    //var lines = [];
-
+	    
 	    var headings = entries.splice(0,record_num);
 	    while (allTextLines.length>0) {
 	    	var e = allTextLines[0].split(';');
@@ -34,7 +32,6 @@
 	            tarr.push(e.shift());
 	        }
 	        allTextLines.shift();
-	        //console.log(tarr);
 	        locations.push(tarr);
 	    }
 	}
@@ -83,23 +80,40 @@
       var dat2 = new Date(finalDate);
 
       if(!iniDate || !finalDate){
-        console.log("oi");
+       if (cpfs.options[cpfs.selectedIndex].value === "all") {
+         locFilt = locations;
 
-        for (var i = 1; i < locations.length; i++) {
+       }else{
+         for (var i = 1; i < locations.length; i++) {
            if (locations[i][0] === cpfs.options[cpfs.selectedIndex].value) {
              locFilt.push(locations[i]);
            }
          }
+       }
 
       }else{
 
-        for (var i = 1; i < locations.length; i++) {
+        if (cpfs.options[cpfs.selectedIndex].value === "all") {
+
+          for (var i = 1; i < locations.length; i++) {
+          var dataColeta = new Date(locations[i][1]);
+
+           if ( dataColeta >= dat.getTime() && dataColeta <= dat2) {
+             locFilt.push(locations[i]);
+            }
+          }
+
+        }else{
+
+          for (var i = 1; i < locations.length; i++) {
           var dataColeta = new Date(locations[i][1]);
 
            if ((locations[i][0] === cpfs.options[cpfs.selectedIndex].value) && ( dataColeta >= dat.getTime() && dataColeta <= dat2)) {
              locFilt.push(locations[i]);
            }
          }
+
+        }        
 
       }
 
@@ -130,7 +144,7 @@
 
       
       
-      var image = 'img/aedes.png'; //Seto o icone para substituir o icone defaut do google maps
+      var image = 'img/aedes.png';
 
       loadPoints(locations);
 
@@ -141,7 +155,7 @@
           position: new google.maps.LatLng(loc[i][2], loc[i][3]),
           title: loc[i][0],
           map: map,
-          icon: image //Adciono o icone para ser incrementado no loop
+          icon: image
         });
       }
       }

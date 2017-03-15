@@ -316,7 +316,7 @@ nav#tf-footer {
 
 .map-content{
 	width: 300px;
-	z-index:10000;
+	z-index:1000;
 	position:absolute;
 	right:0;
 	background:white;
@@ -349,4 +349,8 @@ nav#tf-footer {
 
 .col-9 input{
 	width: 100%;
+}
+
+.content-abstract{
+	padding: 60px 2% 30px 2%;
 }
